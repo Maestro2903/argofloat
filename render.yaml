@@ -3,7 +3,7 @@ services:
     name: argofloat
     env: node
     buildCommand: npm install && npm run build
-    startCommand: npm run preview
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
