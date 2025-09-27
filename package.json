@@ -5,9 +5,14 @@
 	"scripts": {
 		"dev": "npm run pyodide:fetch && vite dev --host",
 		"dev:5050": "npm run pyodide:fetch && vite dev --port 5050",
+		"dev:frontend": "npm run pyodide:fetch && vite dev --host --port 5173",
+		"dev:backend": "cd backend && python -m uvicorn open_webui.main:app --host 0.0.0.0 --port 8080",
+		"dev:fullstack": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
 		"build": "npm run pyodide:fetch && NODE_OPTIONS='--max-old-space-size=4096' vite build",
 		"build:watch": "npm run pyodide:fetch && vite build --watch",
-		"start": "vite preview --host 0.0.0.0 --port $PORT",
+		"start": "concurrently \"vite preview --host 0.0.0.0 --port ${PORT:-5173}\" \"cd backend && python -m uvicorn open_webui.main:app --host 0.0.0.0 --port ${BACKEND_PORT:-8080}\"",
+		"start:frontend": "vite preview --host 0.0.0.0 --port ${PORT:-5173}",
+		"start:backend": "cd backend && python -m uvicorn open_webui.main:app --host 0.0.0.0 --port ${BACKEND_PORT:-8080}",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -25,6 +30,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^5.4.8",
 		"@sveltejs/adapter-static": "^3.0.2",
+		"concurrently": "^8.2.2",
 		"@sveltejs/kit": "^2.5.20",
 		"@sveltejs/vite-plugin-svelte": "^3.1.1",
 		"@tailwindcss/container-queries": "^0.1.1",

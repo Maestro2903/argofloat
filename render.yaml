@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: argofloat
+    name: argofloat-frontend
     env: node
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    startCommand: npm run start:frontend
     envVars:
       - key: NODE_ENV
         value: production
@@ -11,4 +11,16 @@ services:
         value: true
       - key: NODE_OPTIONS
         value: "--max-old-space-size=4096"
+    plan: free
+
+  - type: web
+    name: argofloat-backend
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && python -m uvicorn open_webui.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: RENDER
+        value: true
     plan: free
