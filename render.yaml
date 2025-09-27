@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: argofloat
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: RENDER
+        value: true
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=4096"
+    plan: free

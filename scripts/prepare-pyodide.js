@@ -54,9 +54,9 @@ function initNetworkProxyFromEnv() {
 async function downloadPackages() {
 	console.log('Setting up pyodide + micropip');
 
-	// Skip package download during Vercel builds to avoid buffer overflow
-	if (process.env.VERCEL || process.env.CI || process.env.VERCEL_ENV || process.env.NODE_ENV === 'production') {
-		console.log('✓ Skipping Pyodide package download in CI/Vercel/production environment');
+	// Skip package download during CI/production builds to avoid buffer overflow and memory issues
+	if (process.env.VERCEL || process.env.CI || process.env.VERCEL_ENV || process.env.NODE_ENV === 'production' || process.env.RENDER) {
+		console.log('✓ Skipping Pyodide package download in CI/Vercel/Render/production environment');
 		return;
 	}
 

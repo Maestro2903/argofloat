@@ -22,7 +22,12 @@ const initializePyodide = async () => {
 	// Ensure Pyodide is loaded once and cached in the worker's global scope
 	if (!self.pyodide) {
 		// Use CDN for Pyodide in production to avoid bundle size issues
-		self.indexURL = self.location.origin.includes('vercel.app') || self.location.origin.includes('vercel.com')
+		const isProduction = self.location.origin.includes('vercel.app') ||
+							 self.location.origin.includes('vercel.com') ||
+							 self.location.origin.includes('onrender.com') ||
+							 self.location.origin.includes('render.com');
+
+		self.indexURL = isProduction
 			? 'https://cdn.jsdelivr.net/pyodide/'
 			: '/static/pyodide/';
 		self.stdout = '';

@@ -19,7 +19,12 @@ async function loadPyodideAndPackages(packages: string[] = []) {
 	self.result = null;
 
 	// Use CDN for Pyodide in production to avoid bundle size issues
-	const indexURL = self.location.origin.includes('vercel.app') || self.location.origin.includes('vercel.com')
+	const isProduction = self.location.origin.includes('vercel.app') ||
+						 self.location.origin.includes('vercel.com') ||
+						 self.location.origin.includes('onrender.com') ||
+						 self.location.origin.includes('render.com');
+
+	const indexURL = isProduction
 		? 'https://cdn.jsdelivr.net/pyodide/'
 		: '/static/pyodide/';
 
