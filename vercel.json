@@ -1,0 +1,60 @@
+{
+  "version": 2,
+  "framework": "sveltekit",
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install --include=dev --legacy-peer-deps",
+  "functions": {
+    "**": {
+      "maxDuration": 10,
+      "excludeFiles": "{node_modules/pyodide/**,static/pyodide/**,**/*.wasm,**/*.asm.js,**/*.map,dist/**,build/**}/**"
+    }
+  },
+  "devCommand": "npm run dev",
+  "regions": ["iad1"],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/open_webui/main.py"
+    },
+    {
+      "source": "/static/pyodide/(.*)",
+      "destination": "https://cdn.jsdelivr.net/pyodide/$1"
+    },
+    {
+      "source": "/((?!api).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/build/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/_app/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "VITE_BUILD_CACHE": "true"
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "VITE_BUILD_CACHE": "true"
+    }
+  },
+  "crons": []
+}
